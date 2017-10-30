@@ -1,0 +1,30 @@
+---
+title: "Problem 1"
+author: "Corey Brennan"
+date: "October 30, 2017"
+output: html_document
+---
+
+```{r Problem 1}
+library(readxl)
+library(haven)
+library(janitor)
+library(tidyverse)
+library(rnoaa)
+library(ggridges)
+library(ggthemes)
+library(forcats)
+
+# Reading and cleaning pups data
+pups = read_csv("./FAS_pups.csv") %>%
+  clean_names() %>%
+  gather(key = dev_outcome, value = days_outcome, pd_ears:pd_walk) %>%
+  separate(dev_outcome, c("delete", "dev_outcome"), "_") %>%
+  select(-delete) %>%
+  filter(days_outcome != "NA")
+
+# Plotting base
+ggplot(pups, aes(x = days_outcome, y = dev_outcome)) + geom_density_ridges(aes(fill = dev_outcome), color = "black") 
+
+```
+
